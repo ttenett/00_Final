@@ -36,6 +36,10 @@ if (navigator.geolocation) {
     displayMarker(locPosition, message);
 }
 
+var imageSrc = 'https://i.pinimg.com/564x/07/d9/bb/07d9bb89b7c99e0fc31574078ed88b1e.jpg', // 마커이미지의 주소입니다    
+    imageSize = new kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
+    imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
 // 지도에 마커와 인포윈도우를 표시하는 함수입니다
 function displayMarker(locPosition, message) {
 
@@ -43,6 +47,7 @@ function displayMarker(locPosition, message) {
     const marker = new kakao.maps.Marker({  
         map: map, 
         position: locPosition
+        //image: markerImage
     }); 
     
     const iwContent = message, // 인포윈도우에 표시할 내용
@@ -60,6 +65,13 @@ function displayMarker(locPosition, message) {
     // 지도 중심좌표를 접속위치로 변경합니다
     map.setCenter(locPosition);      
 }
+
+// 커스텀 오버레이에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+var content = '<div class="customoverlay">' +
+    '  <a href="https://map.kakao.com/link/map/11394059" target="_blank">' +
+    '    <span class="title">현재 위치</span>' +
+    '  </a>' +
+    '</div>';
 
 let currentObj = {};
 // 위의 위치정보 콜백함수를 별도의 함수로 빼주기
@@ -150,7 +162,7 @@ function placesSearchCB(data, status, pagination) {
     } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
 
         // 검색 결과가 존재하지 않습니다.
-        alert('병원명 또는 진료과로만 검색이 가능합니다. ');
+        alert('반경 1km내 검색 결과가 존재하지 않습니다. 또는 병원명/진료과로만 검색이 가능합니다. ');
         return;
 
     } else if (status === kakao.maps.services.Status.ERROR) {
